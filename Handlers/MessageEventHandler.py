@@ -1,4 +1,6 @@
 import discord
+from Handlers.Commands.Command import CommandBase, CommandType
+from Handlers.Commands.BizaamCommand import BizaamCommand
 
 class MessageHandler:
     client: discord.Client = None
@@ -6,6 +8,6 @@ class MessageHandler:
         self.client = discordClient
 
     async def MessageRecieved(self, message: discord.Message):
-        if message.content.startswith("!hello"):
-            msg = 'Hello {0.author.mention}'.format(message)
-            await message.channel.send(msg)
+        for sc in CommandBase.__subclasses__():
+            if sc.checkMatch(sc, message):
+                await sc.sendMessage(sc, message)
