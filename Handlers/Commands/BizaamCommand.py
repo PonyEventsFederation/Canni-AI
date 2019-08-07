@@ -15,7 +15,6 @@ class BizaamCommand(CommandBase):
         if BizaamCommand.bizaamEmoji != None:
             return BizaamCommand.bizaamEmoji
         for emoji in client.emojis:
-            print(emoji.name)
             if emoji.name.lower() == "bizaam":
                 BizaamCommand.bizaamEmoji = emoji
         if BizaamCommand.bizaamEmoji == None:
