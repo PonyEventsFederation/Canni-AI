@@ -1,6 +1,7 @@
 import discord
 from Handlers.Commands.Command import CommandBase, CommandType
 from Handlers.Commands.BizaamCommand import BizaamCommand
+from Handlers.Commands.BestPonyCommand import BestPonyCommand
 
 class MessageHandler(object):
     client: discord.Client = None

@@ -21,7 +21,10 @@ class CommandBase(object):
     def cooldownTimeInSeconds(self):
         return NotImplementedError
 
-    cooldownChannels = []
+    @property
+    @abc.abstractmethod
+    def cooldownChannels(self):
+        return NotImplementedError
     
     @staticmethod
     def checkCooldown(subclass, channel: discord.TextChannel) -> bool:

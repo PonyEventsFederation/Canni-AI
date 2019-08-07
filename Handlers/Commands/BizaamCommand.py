@@ -5,7 +5,9 @@ class BizaamCommand(CommandBase):
     commandType: CommandType = CommandType.CONTAINS
     commandText: str = "Bizaam"
     cooldownTimeInSeconds: int = 60
+    cooldownChannels = []
     bizaamEmoji: discord.Emoji = None
+
 
     async def sendMessage(self, message: discord.Message, client: discord.Client) -> bool:
         await message.add_reaction(BizaamCommand.getBizaamEmoji(client))
