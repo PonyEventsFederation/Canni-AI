@@ -33,6 +33,8 @@ class DiscordBot(discord.Client):
         self.fConfig = os.path.join("./settings", "config.cfg")
         self.fPlaylist = os.path.join("./settings", "playlist.json")
 
+        self.galaconDate = datetime.datetime.strptime("07:00:00 1 8 2020", "%H:%M:%S %d %m %Y") # 9:00 - 2:00 (cuz GMT+2)
+
         # Load the config
         self.config = Config(self.fConfig)
         self.userToken = self.config.token
@@ -43,6 +45,14 @@ class DiscordBot(discord.Client):
     async def on_ready(self):
         self.logger.info("Logged in as {name}".format(name=self.user.name))
         self.loop.create_task(self.updateTime())
+    
+    async def updateTime(self):
+        timedelta = self.galaconDate - datetime.datetime.utcnow()
+        days = timedelta.days
+        hours = timedelta.seconds//3600
+        minutes = (timedelta.seconds//60)%60
+        self.logger.info("Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes))
+        await asyncio.sleep(60)
 
     def run(self):
         self.logger.info("Logging in")
