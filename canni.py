@@ -47,6 +47,8 @@ class DiscordBot(discord.Client):
         self.game = discord.Activity(
             type = discord.ActivityType.playing,
         )
+
+        self.messageHandler = MessageHandler(self)
     
     async def on_ready(self):
         self.logger.info("Logged in as {name}".format(name=self.user.name))
@@ -61,7 +63,7 @@ class DiscordBot(discord.Client):
         except IndexError:
             pass
         
-        await self.messageHandler.MessageReceived(message)
+        await self.messageHandler.MessageRecieved(message)
     
     async def updateTime(self):
         timedelta = self.galaconDate - datetime.datetime.utcnow()
