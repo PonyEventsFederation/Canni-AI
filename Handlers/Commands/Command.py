@@ -41,13 +41,14 @@ class CommandBase():
     async def sendMessage(self, message: discord.Message, client: discord.Client) -> bool:
         return
         
-    def checkMatch(self, message: discord.Message) -> bool:
-        if self.commandType == CommandType.CONTAINS:
-            return StrContains(message.content, self.commandText)
-        elif self.commandType == CommandType.CONTAINSWORD:
-            return StrContainsWord(message.content, self.commandText)
+    @staticmethod    
+    def checkMatch(sc, message: discord.Message) -> bool:
+        if sc.commandType == CommandType.CONTAINS:
+            return StrContains(message.content, sc.commandText)
+        elif sc.commandType == CommandType.CONTAINSWORD:
+            return StrContainsWord(message.content, sc.commandText)
         else:
-            return StrStartWith(message.content, self.commandText)
+            return StrStartWith(message.content, sc.commandText)
     pass
 
 
