@@ -11,6 +11,6 @@ class MessageHandler():
             if sc.checkMatch(sc, message):
                 if sc.checkCooldown(sc, message.channel) == False:
                     sc.setCooldown(sc, message.channel)
-                    await sc.sendMessage(sc, message, MessageHandler.client)
+                    await sc.sendMessage(sc, message, self.client)
                 else:
                     await message.channel.send("Pff I'm still cooling down")
