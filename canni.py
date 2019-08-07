@@ -41,10 +41,34 @@ class DiscordBot(discord.Client):
         self.prefix = self.config.prefix
 
         self.youtubeAPI = self.config.youtubeAPI
+
+        self.game = discord.Activity(
+            type = discord.ActivityType.playing,
+        )
     
     async def on_ready(self):
         self.logger.info("Logged in as {name}".format(name=self.user.name))
         self.loop.create_task(self.updateTime())
+    
+    async def on_message(self, message):
+        if(message.author == self.user or message.author.bot):
+            return # return silently
+        try:
+            if(message.raw_mentions[0] == self.user.id):
+                pass # Handle mention things here
+        except IndexError:
+            pass
+        if("bizaam" in message.content.lower()):
+            bizaamEmoji = None
+            for emoji in message.guild.emojis:
+                if(emoji.name.lower() == "bizaam"):
+                    bizaamEmoji = emoji
+                    break
+            if(bizaamEmoji == None):
+                return
+            await message.add_reaction(bizaamEmoji)
+            newMessage = await message.channel.send("{} BIIZAAAAAMM!!!".format(str(bizaamEmoji)))
+            await newMessage.add_reaction(bizaamEmoji)
     
     async def updateTime(self):
         timedelta = self.galaconDate - datetime.datetime.utcnow()
@@ -52,7 +76,9 @@ class DiscordBot(discord.Client):
         hours = timedelta.seconds//3600
         minutes = (timedelta.seconds//60)%60
         self.logger.info("Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes))
-        await asyncio.sleep(60)
+        self.game.name="Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes)
+        await self.change_presence(activity=self.game)
+        await asyncio.sleep(10)
 
     def run(self):
         self.logger.info("Logging in")
