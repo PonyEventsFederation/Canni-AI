@@ -63,15 +63,19 @@ class DiscordBot(discord.Client):
         except IndexError:
             pass
         
-        await self.messageHandler.MessageRecieved(message)
+        await self.messageHandler.MessageReceived(message)
     
     async def updateTime(self):
         timedelta = self.galaconDate - datetime.datetime.utcnow()
         days = timedelta.days
         hours = timedelta.seconds//3600
         minutes = (timedelta.seconds//60)%60
-        self.logger.info("Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes))
-        self.game.name="Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes)
+        if(minutes < 10):
+            self.logger.info("Time to Galacon: {days} days, {hours}:0{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes))
+            self.game.name="Time to Galacon: {days} days, {hours}:0{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes)
+        else:
+            self.logger.info("Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes))
+            self.game.name="Time to Galacon: {days} days, {hours}:{minutes} left! Hype!".format(days=days, hours=hours, minutes=minutes)
         await self.change_presence(activity=self.game)
         await asyncio.sleep(10)
 
