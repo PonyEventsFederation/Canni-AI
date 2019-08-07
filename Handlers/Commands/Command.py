@@ -4,8 +4,12 @@ from Utils.ContentCheck import StrContains, StrContainsWord, StrStartWith
 from enum import Enum
 import time
 
-class CommandBase(object):
+class CommandBase():
+    def __init__(self):
+        self.cooldownChannels = []
+    
     __metaclass__ = abc.ABCMeta
+
     @property
     @abc.abstractmethod
     def commandType(self):
@@ -42,25 +46,23 @@ class CommandBase(object):
     async def sendMessage(self, message: discord.Message, client: discord.Client) -> bool:
         return
         
-    def checkMatch(self, message: discord.Message) -> bool:
-        if self.commandType == CommandType.CONTAINS:
-            return StrContains(message.content, self.commandText)
-        elif self.commandType == CommandType.CONTAINSWORD:
-            return StrContainsWord(message.content, self.commandText)
+    @staticmethod    
+    def checkMatch(sc, message: discord.Message) -> bool:
+        if sc.commandType == CommandType.CONTAINS:
+            return StrContains(message.content, sc.commandText)
+        elif sc.commandType == CommandType.CONTAINSWORD:
+            return StrContainsWord(message.content, sc.commandText)
         else:
-            return StrStartWith(message.content, self.commandText)
+            return StrStartWith(message.content, sc.commandText)
     pass
 
 
 class CommandType(Enum):
-    STARTSWIDTH = 0
+    STARTSWITH = 0
     CONTAINS = 1
     CONTAINSWORD = 2
 
-class CooldownChannel(object):
-    channel: discord.TextChannel = None
-    timestamp: int = 0
-
-    def __init__(self, channel: discord.TextChannel, timestamp: int):
+class CooldownChannel():
+    def __init__(self, channel: discord.TextChannel, timestamp: int = 0):
         self.channel = channel
         self.timestamp = timestamp

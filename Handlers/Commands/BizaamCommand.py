@@ -10,9 +10,9 @@ class BizaamCommand(CommandBase):
 
 
     async def sendMessage(self, message: discord.Message, client: discord.Client) -> bool:
-        await message.add_reaction(BizaamCommand.getBizaamEmoji(client))
-        newMessage = await message.channel.send("{0} BIIZAAAAAMM!!!".format(BizaamCommand.getBizaamEmoji(client)))
-        await newMessage.add_reaction(BizaamCommand.getBizaamEmoji(client))
+        await message.add_reaction(self.getBizaamEmoji(client))
+        newMessage = await message.channel.send("{0} BIIZAAAAAMM!!!".format(self.getBizaamEmoji(client)))
+        await newMessage.add_reaction(self.getBizaamEmoji(client))
 
     @staticmethod
     def getBizaamEmoji(client: discord.Client):
