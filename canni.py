@@ -25,7 +25,6 @@ websocketLogger.setLevel(logging.WARNING)
 
 # Abstract away client events into a class
 class DiscordBot(discord.Client):
-    messageHandler: MessageHandler = None
     def __init__(self):
         super().__init__()
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -48,8 +47,6 @@ class DiscordBot(discord.Client):
         self.game = discord.Activity(
             type = discord.ActivityType.playing,
         )
-
-        self.messageHandler = MessageHandler(self)
     
     async def on_ready(self):
         self.logger.info("Logged in as {name}".format(name=self.user.name))
@@ -64,7 +61,7 @@ class DiscordBot(discord.Client):
         except IndexError:
             pass
         
-        await self.messageHandler.MessageRecieved(message)
+        await self.messageHandler.MessageReceived(message)
     
     async def updateTime(self):
         timedelta = self.galaconDate - datetime.datetime.utcnow()

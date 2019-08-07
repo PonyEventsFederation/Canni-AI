@@ -4,8 +4,12 @@ from Utils.ContentCheck import StrContains, StrContainsWord, StrStartWith
 from enum import Enum
 import time
 
-class CommandBase(object):
+class CommandBase():
+    def __init__(self):
+        self.cooldownChannels = []
+    
     __metaclass__ = abc.ABCMeta
+    
     @property
     @abc.abstractmethod
     def commandType(self):
@@ -20,8 +24,6 @@ class CommandBase(object):
     @abc.abstractmethod
     def cooldownTimeInSeconds(self):
         return NotImplementedError
-
-    cooldownChannels = []
     
     @staticmethod
     def checkCooldown(subclass, channel: discord.TextChannel) -> bool:
@@ -50,14 +52,11 @@ class CommandBase(object):
 
 
 class CommandType(Enum):
-    STARTSWIDTH = 0
+    STARTSWITH = 0
     CONTAINS = 1
     CONTAINSWORD = 2
 
-class CooldownChannel(object):
-    channel: discord.TextChannel = None
-    timestamp: int = 0
-
-    def __init__(self, channel: discord.TextChannel, timestamp: int):
+class CooldownChannel():
+    def __init__(self, channel: discord.TextChannel, timestamp: int = 0):
         self.channel = channel
         self.timestamp = timestamp
