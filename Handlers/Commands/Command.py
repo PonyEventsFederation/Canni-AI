@@ -47,7 +47,7 @@ class CommandBase():
         elif self.commandType == CommandType.CONTAINSWORD:
             return StrContainsWord(message.content, self.commandText)
         else:
-            return StrStartWith(message.content, self.commandText
+            return StrStartWith(message.content, self.commandText)
     pass
 
 
