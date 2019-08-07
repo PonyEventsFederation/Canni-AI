@@ -4,16 +4,20 @@ from Handlers.Commands.Command import CommandBase, CommandType
 class BizaamCommand(CommandBase):
     commandType: CommandType = CommandType.CONTAINS
     commandText: str = "Bizaam"
+    cooldownTimeInSeconds: int = 60
     bizaamEmoji: discord.Emoji = None
 
-    async def sendMessage(self, message: discord.Message) -> bool:
-        await message.channel.send('BIIZAAAAMMM!!')
+    async def sendMessage(self, message: discord.Message, client: discord.Client) -> bool:
+        await message.channel.send("{0} BIIZAAAAAMM!!!".format(BizaamCommand.getBizaamEmoji(client)))
 
-    def getBizaamEmoji(self, guild: discord.Guild):
-        if self.bizaamEmoji != None:
-            return self.bizaamEmoji
-        for emoji in guild.emojis:
+    @staticmethod
+    def getBizaamEmoji(client: discord.Client):
+        if BizaamCommand.bizaamEmoji != None:
+            return BizaamCommand.bizaamEmoji
+        for emoji in client.emojis:
+            print(emoji.name)
             if emoji.name.lower() == "bizaam":
-                self.bizaamEmoji = emoji
-        if self.bizaamEmoji == None:
+                BizaamCommand.bizaamEmoji = emoji
+        if BizaamCommand.bizaamEmoji == None:
             return ""
+        return BizaamCommand.bizaamEmoji
